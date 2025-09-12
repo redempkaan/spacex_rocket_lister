@@ -2,7 +2,7 @@
 
 This Android application lists rockets from the SpaceX API and shows detailed information about each rocket.
 
-## 📱 Features
+## Features
 
 - Display a list of all SpaceX rockets  
 - For each rocket:
