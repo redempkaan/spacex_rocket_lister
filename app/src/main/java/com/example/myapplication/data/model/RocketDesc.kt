@@ -1,15 +1,15 @@
-package com.example.myapplication.models
+package com.example.myapplication.data.model
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.databinding.RocketDescBinding
+import com.example.myapplication.databinding.FragmentRocketDescBinding
 
 class RocketDescActivity : AppCompatActivity() {
-    private lateinit var binding: RocketDescBinding
+    private lateinit var binding: FragmentRocketDescBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = RocketDescBinding.inflate(layoutInflater) // Inflating description layout
+        binding = FragmentRocketDescBinding.inflate(layoutInflater) // Inflating description layout
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.parcelize)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -47,8 +48,6 @@ android {
     }
 }
 
-dependencies {
-
     dependencies {
         implementation(libs.androidx.core.ktx)
         implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -69,7 +68,6 @@ dependencies {
         androidTestImplementation(libs.androidx.espresso.core)
         androidTestImplementation(platform(libs.androidx.compose.bom)) // Keep this for test dependencies
         androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+        implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
+        implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
     }
-
-
-}

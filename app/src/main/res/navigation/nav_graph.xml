@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/rocketListFragment"> <!-- Starting point of the app -->
+
+    <!-- List fragment -->
+    <fragment
+        android:id="@+id/rocketListFragment"
+        android:name="com.example.myapplication.data.ui.rocket.RocketListFragment"
+        android:label="Rockets"
+        tools:layout="@layout/fragment_rocket_list">
+
+        <!-- Action to switch from list fragment to description fragment -->
+        <action
+            android:id="@+id/action_rocketListFragment_to_rocketDescFragment"
+            app:destination="@id/rocketDescFragment" />
+    </fragment>
+
+    <!-- Description fragment -->
+    <fragment
+        android:id="@+id/rocketDescFragment"
+        android:name="com.example.myapplication.data.ui.rocket.RocketDescFragment"
+        android:label="Rocket Description"
+        tools:layout="@layout/fragment_rocket_desc">
+
+        <!-- Safe argument for clicked rocket object-->
+        <argument
+            android:name="rocket"
+            app:argType="com.example.myapplication.data.model.Rocket"
+            app:nullable="false" />
+    </fragment>
+
+</navigation>

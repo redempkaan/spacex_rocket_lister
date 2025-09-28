@@ -1,21 +1,24 @@
-package com.example.myapplication.models
+package com.example.myapplication.data.model
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.myapplication.databinding.RocketInfoBinding
+import com.example.myapplication.data.ui.common.ImageLoader
+import com.example.myapplication.databinding.FragmentRocketInfoBinding
 
 
-class RocketAdapter(private val rockets: List<Rocket>, private val onItemClick: (Rocket) -> Unit) : //Lambda to trigger click event
-    RecyclerView.Adapter<RocketAdapter.RocketViewHolder>() {
+class RocketAdapter(
+    private val rockets: List<Rocket>,
+    private val imageLoader: ImageLoader,
+    private val onItemClick: (Rocket) -> Unit
+) : RecyclerView.Adapter<RocketAdapter.RocketViewHolder>() {
 
 
-    inner class RocketViewHolder(val binding: RocketInfoBinding) : // Class for recyclerview elements
+    inner class RocketViewHolder(val binding: FragmentRocketInfoBinding) : // Class for recyclerview elements
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketViewHolder { // Is called when a new view holder is needed
-        val binding = RocketInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = FragmentRocketInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RocketViewHolder(binding)
     }
 
@@ -23,9 +26,7 @@ class RocketAdapter(private val rockets: List<Rocket>, private val onItemClick: 
         val rocket = rockets[position]
         holder.binding.textRocketName.text = rocket.name
 
-        Glide.with(holder.itemView.context) // Loading rocket images
-            .load(rocket.flickrImages.firstOrNull())
-            .into(holder.binding.imageRocket)
+        imageLoader.load(rocket.flickrImages.firstOrNull(), holder.binding.imageRocket) // Using image loader in the app container to load images
 
         holder.binding.root.setOnClickListener { // Setting up a click listener
             onItemClick(rocket)
