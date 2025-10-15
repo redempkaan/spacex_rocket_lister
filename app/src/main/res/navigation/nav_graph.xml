@@ -8,7 +8,7 @@
     <!-- List fragment -->
     <fragment
         android:id="@+id/rocketListFragment"
-        android:name="com.example.myapplication.data.ui.rocket.RocketListFragment"
+        android:name="com.example.myapplication.view.fragment.RocketListFragment"
         android:label="Rockets"
         tools:layout="@layout/fragment_rocket_list">
 
@@ -21,14 +21,14 @@
     <!-- Description fragment -->
     <fragment
         android:id="@+id/rocketDescFragment"
-        android:name="com.example.myapplication.data.ui.rocket.RocketDescFragment"
+        android:name="com.example.myapplication.view.fragment.RocketDescFragment"
         android:label="Rocket Description"
         tools:layout="@layout/fragment_rocket_desc">
 
         <!-- Safe argument for clicked rocket object-->
         <argument
             android:name="rocket"
-            app:argType="com.example.myapplication.data.model.Rocket"
+            app:argType="com.example.myapplication.model.rocket.Rocket"
             app:nullable="false" />
     </fragment>
 

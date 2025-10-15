@@ -1,6 +1,6 @@
-package com.example.myapplication.data.remote
+package com.example.myapplication.model.remote
 
-import com.example.myapplication.data.model.Rocket
+import com.example.myapplication.model.rocket.Rocket
 import retrofit2.http.GET
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

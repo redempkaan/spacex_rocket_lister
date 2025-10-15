@@ -1,10 +1,10 @@
 package com.example.myapplication.di
 
-import com.example.myapplication.data.remote.SpaceXApi
-import com.example.myapplication.data.remote.provideSpaceXApi
-import com.example.myapplication.data.repository.RocketRepository
-import com.example.myapplication.data.ui.common.GlideImageLoader
-import com.example.myapplication.data.ui.common.ImageLoader
+import com.example.myapplication.model.remote.SpaceXApi
+import com.example.myapplication.model.remote.provideSpaceXApi
+import com.example.myapplication.model.repository.RocketRepository
+import com.example.myapplication.model.common.GlideImageLoader
+import com.example.myapplication.model.common.ImageLoader
 
 class AppContainer {
     private val api: SpaceXApi = provideSpaceXApi()

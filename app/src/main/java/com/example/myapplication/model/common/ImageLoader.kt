@@ -1,4 +1,4 @@
-package com.example.myapplication.data.ui.common
+package com.example.myapplication.model.common
 
 import com.bumptech.glide.Glide
 import android.widget.ImageView

@@ -1,11 +1,11 @@
-package com.example.myapplication.data.model
+package com.example.myapplication.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.data.ui.common.ImageLoader
 import com.example.myapplication.databinding.FragmentRocketInfoBinding
-
+import com.example.myapplication.model.common.ImageLoader
+import com.example.myapplication.model.rocket.Rocket
 
 class RocketAdapter(
     private val rockets: List<Rocket>,
