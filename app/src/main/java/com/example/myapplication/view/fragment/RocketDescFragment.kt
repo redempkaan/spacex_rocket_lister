@@ -7,14 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myapplication.di.MyApp
 import com.example.myapplication.databinding.FragmentRocketDescBinding
-import com.example.myapplication.controller.RocketDescController
+import com.example.myapplication.model.rocket.Rocket
+import com.example.myapplication.model.common.ImageLoader
 
 class RocketDescFragment : Fragment() {
 
     private var _binding: FragmentRocketDescBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var controller: RocketDescController // Controller for the desc fragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,14 +27,18 @@ class RocketDescFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val appContainer = (requireActivity().application as MyApp).appContainer
-        controller = RocketDescController( // Constructing the controller
-            binding = binding,
-            imageLoader = appContainer.imageLoader
-        )
 
         val args = RocketDescFragmentArgs.fromBundle(requireArguments()) // Getting specified rocket from the safe args
         val rocket = args.rocket
-        controller.showRocketDetails(rocket)
+        showRocketDetails(rocket, appContainer.imageLoader)
+    }
+
+    fun showRocketDetails(rocket: Rocket, imageLoader: ImageLoader) { // Printing rocket details
+        binding.textRocketName.text = rocket.name
+        binding.textFirstFlight.text = "First flight: ${rocket.firstFlight}"
+        binding.textHeight.text = "Height: ${rocket.height.meters}m"
+        binding.textDiameter.text = "Diameter: ${rocket.diameter.meters}"
+        imageLoader.load(rocket.flickrImages[1], binding.imageRocket)
     }
 
     override fun onDestroyView() {

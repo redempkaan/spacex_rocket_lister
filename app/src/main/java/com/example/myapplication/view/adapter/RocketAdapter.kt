@@ -2,35 +2,53 @@ package com.example.myapplication.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentRocketInfoBinding
-import com.example.myapplication.model.common.ImageLoader
 import com.example.myapplication.model.rocket.Rocket
+import com.example.myapplication.di.MyApp
+import com.example.myapplication.model.common.ImageLoader
 
 class RocketAdapter(
-    private val rockets: List<Rocket>,
-    private val imageLoader: ImageLoader,
     private val onItemClick: (Rocket) -> Unit
-) : RecyclerView.Adapter<RocketAdapter.RocketViewHolder>() {
+) : ListAdapter<Rocket, RocketAdapter.RocketViewHolder>(RocketDiffCallback()) {
 
+    inner class RocketViewHolder(val binding: FragmentRocketInfoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    inner class RocketViewHolder(val binding: FragmentRocketInfoBinding) : // Class for recyclerview elements
-        RecyclerView.ViewHolder(binding.root)
+        // Getting image loader from container
+        private val imageLoader: ImageLoader by lazy {
+            val app = binding.root.context.applicationContext as MyApp
+            app.appContainer.imageLoader
+        }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketViewHolder { // Is called when a new view holder is needed
+        fun bind(rocket: Rocket) { // Printing rocket infos and setting a listene
+
+            binding.textRocketName.text = rocket.name
+
+            imageLoader.load(rocket.flickrImages.firstOrNull(), binding.imageRocket)
+
+            binding.root.setOnClickListener {
+                onItemClick(rocket)
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketViewHolder {
         val binding = FragmentRocketInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RocketViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RocketViewHolder, position: Int) {
-        val rocket = rockets[position]
-        holder.binding.textRocketName.text = rocket.name
-
-        imageLoader.load(rocket.flickrImages.firstOrNull(), holder.binding.imageRocket) // Using image loader in the app container to load images
-
-        holder.binding.root.setOnClickListener { // Setting up a click listener
-            onItemClick(rocket)
-        }
+        holder.bind(getItem(position))
     }
-    override fun getItemCount() = rockets.size // Enables recyclerview to know how many items it needs
+}
+
+class RocketDiffCallback : DiffUtil.ItemCallback<Rocket>() { // Diff class to check if rocket object is changed
+    override fun areItemsTheSame(oldItem: Rocket, newItem: Rocket): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Rocket, newItem: Rocket): Boolean =
+        oldItem == newItem
 }
