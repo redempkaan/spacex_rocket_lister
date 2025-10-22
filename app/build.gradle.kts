@@ -1,9 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.parcelize)
-    id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.kotlin.safeargs)
+    alias(libs.plugins.ksp)
+}
+
+// Top-level configuration for KSP processors
+ksp {
+    arg("glide.generated.type", "com.example.myapplication.GlideApp")
+    arg("ksp.datainbinding.generated", "true")
 }
 
 android {
@@ -16,14 +22,12 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Explicitly setting the JVM toolchain for Kotlin within the Android configuration
     kotlin {
-        compilerOptions {
-            freeCompilerArgs.add("-Xlambdas=class")
-        }
+        jvmToolchain(17)
     }
 
     buildTypes {
@@ -36,38 +40,32 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
-        compose = true
+        compose = false
         dataBinding = true
     }
 }
 
-    dependencies {
-        implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.lifecycle.runtime.ktx)
-        implementation(platform(libs.androidx.compose.bom))
-        implementation("com.github.bumptech.glide:glide:5.0.4")
-        annotationProcessor("com.github.bumptech.glide:compiler:5.0.4")
-        implementation(libs.androidx.compose.ui)
-        implementation(libs.androidx.compose.ui.graphics)
-        implementation(libs.androidx.compose.material3)
-        implementation(libs.androidx.compose.ui.tooling.preview)
-        debugImplementation(libs.androidx.compose.ui.tooling)
-        implementation("androidx.appcompat:appcompat:1.7.1")
-        implementation("com.google.android.material:material:1.13.0")
-        implementation("com.squareup.retrofit2:retrofit:3.0.0")
-        implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-        testImplementation(libs.junit)
-        androidTestImplementation(libs.androidx.junit)
-        androidTestImplementation(libs.androidx.espresso.core)
-        androidTestImplementation(platform(libs.androidx.compose.bom)) // Keep this for test dependencies
-        androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-        implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
-        implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
-    }
+dependencies {
+    ksp("androidx.databinding:databinding-compiler:${libs.versions.agp.get()}")
+    ksp(libs.glide.ksp)
+
+    // Implementation dependencies
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.glide)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.material)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+
+    // Test dependencies
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+}

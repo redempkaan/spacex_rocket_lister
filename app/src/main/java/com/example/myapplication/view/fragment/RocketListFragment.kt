@@ -16,12 +16,14 @@ import com.example.myapplication.view.adapter.RocketAdapter
 import com.example.myapplication.model.rocket.Rocket
 import kotlinx.coroutines.launch
 import androidx.appcompat.app.AlertDialog
+import com.example.myapplication.model.common.ImageLoader
 
 
 class RocketListFragment : Fragment() {
 
     private lateinit var controller: RocketListController
     private lateinit var adapter: RocketAdapter
+    private lateinit var imageLoader: ImageLoader
     private var _binding: FragmentRocketListBinding? = null
     private val binding get() = _binding!!
 
@@ -37,36 +39,32 @@ class RocketListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val appContainer = (requireActivity().application as MyApp).appContainer
-        controller = RocketListController(appContainer.rocketRepository) // Controller init
+        controller = RocketListController(appContainer.rocketRepository)
+        imageLoader = appContainer.imageLoader
 
-        adapter = RocketAdapter { rocket ->
+
+        adapter = RocketAdapter(imageLoader) { rocket ->
             navigateToDetail(rocket)
         }
 
-        binding.recyclerViewRockets.adapter = adapter
-        binding.recyclerViewRockets.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewRockets.apply {
+            adapter = this@RocketListFragment.adapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
 
         observeRockets()
+
+        controller.loadRockets()
     }
 
-    // Trying to get rockets from API, managing UI states according to the result
-    private fun observeRockets() {
+    private fun observeRockets() { // Collect the UI state
         viewLifecycleOwner.lifecycleScope.launch {
-            showLoading()
-
-            when (val result = controller.loadRockets()) {
-                is NetworkResult.Success -> { // Success
-                    hideLoading()
-                    binding.textError.visibility = View.GONE
-                    adapter.submitList(result.data)
+            controller.uiState.collect { state ->
+                when (state) {
+                    is NetworkResult.Loading -> showLoading()
+                    is NetworkResult.Success -> showRockets(state.data)
+                    is NetworkResult.Error -> showError(state.message)
                 }
-
-                is NetworkResult.Error -> { // Error
-                    hideLoading()
-                    showRetryDialog(result.message ?: "Unknown error") // Show popup
-                }
-
-                is NetworkResult.Loading -> showLoading() // Loading
             }
         }
     }
@@ -75,18 +73,19 @@ class RocketListFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideLoading() {
+    private fun showRockets(rockets: List<Rocket>) {
+        adapter.submitList(rockets)
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showRetryDialog(errorMessage: String) {
+    private fun showError(errorMessage: String) {
         AlertDialog.Builder(requireContext())
             .setTitle("Network Error")
             .setMessage("$errorMessage\nWould you like to retry?")
             .setCancelable(false)
             .setPositiveButton("Retry") { dialog, _ ->
                 dialog.dismiss()
-                observeRockets() // Retry the API call
+                controller.retry() // Retry the API call
             }
             .setNegativeButton("Exit App") { dialog, _ ->
                 dialog.dismiss()

@@ -7,31 +7,29 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentRocketInfoBinding
 import com.example.myapplication.model.rocket.Rocket
-import com.example.myapplication.di.MyApp
 import com.example.myapplication.model.common.ImageLoader
 
 class RocketAdapter(
+    private val imageLoader: ImageLoader,
     private val onItemClick: (Rocket) -> Unit
 ) : ListAdapter<Rocket, RocketAdapter.RocketViewHolder>(RocketDiffCallback()) {
 
     inner class RocketViewHolder(val binding: FragmentRocketInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        // Getting image loader from container
-        private val imageLoader: ImageLoader by lazy {
-            val app = binding.root.context.applicationContext as MyApp
-            app.appContainer.imageLoader
+        private var currentRocket: Rocket? = null
+
+        init { // Setting click listener only at the creation of the view holder
+            binding.root.setOnClickListener {
+                currentRocket?.let(onItemClick)
+            }
         }
 
-        fun bind(rocket: Rocket) { // Printing rocket infos and setting a listene
-
+        fun bind(rocket: Rocket) { // Printing rocket infos
+            currentRocket = rocket
             binding.textRocketName.text = rocket.name
 
             imageLoader.load(rocket.flickrImages.firstOrNull(), binding.imageRocket)
-
-            binding.root.setOnClickListener {
-                onItemClick(rocket)
-            }
         }
     }
 
