@@ -6,10 +6,11 @@
     app:startDestination="@id/rocketListFragment"> <!-- Starting point of the app -->
 
     <!-- List fragment -->
+    <!-- Toolbar title automatically synchronizes with the fragment label -->
     <fragment
         android:id="@+id/rocketListFragment"
         android:name="com.example.myapplication.view.fragment.RocketListFragment"
-        android:label="Rockets"
+        android:label="SpaceX Rockets"
         tools:layout="@layout/fragment_rocket_list">
 
         <!-- Action to switch from list fragment to description fragment -->

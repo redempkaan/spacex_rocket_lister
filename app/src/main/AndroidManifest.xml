@@ -11,13 +11,12 @@
         android:label="SpaceX Rocket Lister"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.MyApplication">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="Home"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:label="Home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

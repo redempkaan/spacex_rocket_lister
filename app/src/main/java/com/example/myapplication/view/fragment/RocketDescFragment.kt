@@ -35,9 +35,9 @@ class RocketDescFragment : Fragment() {
 
     fun showRocketDetails(rocket: Rocket, imageLoader: ImageLoader) { // Printing rocket details
         binding.textRocketName.text = rocket.name
-        binding.textFirstFlight.text = "First flight: ${rocket.firstFlight}"
-        binding.textHeight.text = "Height: ${rocket.height.meters}m"
-        binding.textDiameter.text = "Diameter: ${rocket.diameter.meters}"
+        binding.textFirstFlight.text = "    ${rocket.firstFlight}"
+        binding.textHeight.text = "    ${rocket.height.meters}m"
+        binding.textDiameter.text = "    ${rocket.diameter.meters}m"
         imageLoader.load(rocket.flickrImages[1], binding.imageRocket)
     }
 

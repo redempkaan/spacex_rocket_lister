@@ -7,28 +7,37 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:cardCornerRadius="12dp"
-        app:cardElevation="6dp">
+        app:cardElevation="6dp"
+        android:backgroundTint="#66FFFFFF">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/imageRocket"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"/>
+            <ImageView
+                android:id="@+id/imageRocket"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/rounded_image_bg"
+                android:clipToOutline="true" />
 
-    <TextView
-        android:id="@+id/textRocketName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:paddingStart="30dp"
-        android:textSize="18sp" />
-</LinearLayout>
+            <TextView
+                android:id="@+id/textRocketName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="30dp"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:shadowColor="#80FFFFFF"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="4" />
+        </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 </layout>
