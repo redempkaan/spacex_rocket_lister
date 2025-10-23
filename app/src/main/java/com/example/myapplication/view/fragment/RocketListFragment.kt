@@ -51,13 +51,13 @@ class RocketListFragment : Fragment() {
             adapter = this@RocketListFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+        controller.loadRockets() // Load the rockets from the API
 
-        observeRockets()
+        observeState() // Observe the state in the controller to decide the next state of the UI
 
-        controller.loadRockets()
     }
 
-    private fun observeRockets() { // Collect the UI state
+    private fun observeState() { // Collect the UI state
         viewLifecycleOwner.lifecycleScope.launch {
             controller.uiState.collect { state ->
                 when (state) {
